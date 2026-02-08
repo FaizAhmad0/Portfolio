@@ -29,8 +29,17 @@ export default function ContactSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // ✅ basic required guard (in case browser validation is bypassed)
+    if (
+      !formState.name.trim() ||
+      !formState.email.trim() ||
+      !formState.message.trim()
+    ) {
+      return;
+    }
+
     const to = "mdfaizahmad1020@gmail.com";
-    const subject = `Portfolio Contact — ${formState.name || "Someone"} (${formState.email || "no email"})`;
+    const subject = `Portfolio Contact — ${formState.name} (${formState.email})`;
     const body = `Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`;
 
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
@@ -66,14 +75,15 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 max-w-5xl mx-auto">
+        {/* ✅ Center on mobile */}
+        <div className="grid lg:grid-cols-2 gap-16 max-w-5xl mx-auto justify-items-center">
           {/* Contact form */}
           <motion.form
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             onSubmit={handleSubmit}
-            className="space-y-6"
+            className="space-y-6 w-full max-w-[520px] mx-auto"
           >
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -83,6 +93,7 @@ export default function ContactSection() {
                 whileFocus={{ scale: 1.01 }}
                 type="text"
                 id="name"
+                required
                 value={formState.name}
                 onChange={(e) =>
                   setFormState({ ...formState, name: e.target.value })
@@ -100,6 +111,7 @@ export default function ContactSection() {
                 whileFocus={{ scale: 1.01 }}
                 type="email"
                 id="email"
+                required
                 value={formState.email}
                 onChange={(e) =>
                   setFormState({ ...formState, email: e.target.value })
@@ -120,6 +132,7 @@ export default function ContactSection() {
                 whileFocus={{ scale: 1.01 }}
                 id="message"
                 rows={5}
+                required
                 value={formState.message}
                 onChange={(e) =>
                   setFormState({ ...formState, message: e.target.value })
@@ -148,7 +161,7 @@ export default function ContactSection() {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="space-y-8"
+            className="space-y-8 w-full max-w-[520px] mx-auto"
           >
             <div className="glass rounded-2xl p-8">
               <h3 className="font-display text-xl font-semibold mb-4">
@@ -231,8 +244,9 @@ export default function ContactSection() {
                       transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
                       whileHover={{ scale: 1.08, y: -5 }}
                       className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center
-                   hover:bg-primary/15 border border-border/60 transition-colors"
+                                hover:bg-primary/15 border border-border/60 transition-colors"
                       title={social.name}
+                      aria-label={social.name}
                     >
                       <Icon className="text-xl text-foreground/90" />
                     </motion.a>
