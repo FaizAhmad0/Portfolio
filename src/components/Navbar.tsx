@@ -60,16 +60,28 @@ export default function Navbar() {
           isScrolled ? "glass-strong py-4" : "py-6"
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
+        <div className="container mx-auto sm:px-6 flex items-center justify-between">
           <motion.button
             type="button"
             onClick={() => smoothScrollTo("#home")}
-            className="font-display text-2xl font-bold text-gradient"
+            className="font-display text-2xl font-bold"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Go to Home"
           >
-            Faiz Ahmad
+            {/* Light theme */}
+            <img
+              src="/logo.png"
+              alt="Faiz Ahmad"
+              className="h-14 w-15 block dark:hidden"
+            />
+
+            {/* Dark theme */}
+            <img
+              src="/darklogo.png"
+              alt="Faiz Ahmad"
+              className="h-14 w-15 hidden dark:block"
+            />
           </motion.button>
 
           {/* Desktop Menu */}

@@ -8,7 +8,16 @@ const projects = [
     subtitle: "Order & Payment Platform",
     description:
       "Financial + order management platform with UPI/bank/card payments, multi-role dashboards (user/manager/admin/dispatch/accountant), WhatsApp + email alerts, and secure APIs.",
-    tags: ["React", "Node.js", "MongoDB", "Instamojo", "AWS", "Docker"],
+    tags: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "JWT",
+      "MongoDB",
+      "Instamojo",
+      "Redis",
+      "VPS",
+    ],
     link: "https://wallet.saumiccraft.in",
     credentials: { user: "UID2223", pass: "UID2223@MD@30" },
     image:
@@ -20,8 +29,9 @@ const projects = [
     subtitle: "Tickets & Appointments",
     description:
       "Multi-role support system for raising tickets and booking appointments. Built optimized MongoDB schema/indexes and RBAC workflows for smooth operations.",
-    tags: ["React", "Node.js", "MongoDB", "JWT", "RBAC", "NGINX"],
-    link: "https://help.saumiccraft.in",
+    tags: ["React", "Node.js", "MongoDB", "JWT", "RBAC", "NGINX", "VPS", "SSE"],
+    link: "https://help.saumiccraft.com/",
+    credentials: { user: "UID2223", pass: "UID2223@MD@30" },
     image:
       "linear-gradient(135deg, rgba(168,85,247,0.20), rgba(236,72,153,0.18))",
   },
@@ -31,7 +41,17 @@ const projects = [
     subtitle: "Internal Ops (MERN)",
     description:
       "Internal CRM built with MERN stack to manage users/orders/status flows with fast search/filtering and clean role-based modules.",
-    tags: ["React", "Node.js", "MongoDB", "Ant Design", "REST APIs"],
+    tags: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Tailwind",
+      "Ant Design",
+      "REST APIs",
+      "Socket.io",
+      "Nodemailer",
+      "BullMQ",
+    ],
     link: "https://crm.saumiccraft.com/",
     image:
       "linear-gradient(135deg, rgba(14,165,233,0.20), rgba(34,197,94,0.16))",
@@ -53,8 +73,16 @@ const projects = [
     subtitle: "Course Tracking Platform",
     description:
       "A role-based learning management system where users can log in to access enrolled courses, track learning progress, resume lessons, and monitor completion status, with a secure and scalable backend.",
-    tags: ["React", "Node.js", "MongoDB", "JWT Auth", "REST APIs"],
+    tags: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "JWT Auth",
+      "REST APIs",
+    ],
     link: "https://training.saumiccraft.com/",
+    credentials: { user: "UID2223", pass: "UID2223@MD@30" },
     image:
       "linear-gradient(135deg, rgba(34,197,94,0.18), rgba(14,165,233,0.16))",
   },
@@ -64,7 +92,17 @@ const projects = [
     subtitle: "MERN Storefront",
     description:
       "E-commerce platform with product catalog, cart/checkout flow, admin inventory control, and scalable backend APIs.",
-    tags: ["React", "Node.js", "MongoDB", "REST APIs"],
+    tags: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Tailwind",
+      "Ant Design",
+      "REST APIs",
+      "Socket.io",
+      "Nodemailer",
+      "BullMQ",
+    ],
     link: "#",
     image:
       "linear-gradient(135deg, rgba(245,158,11,0.16), rgba(99,102,241,0.14))",
