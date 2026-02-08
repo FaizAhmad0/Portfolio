@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
+  { label: "Home", href: "#home" },
+  { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -14,11 +15,39 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // lock background scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobileMenuOpen]);
+
+  // ESC closes mobile menu
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setIsMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  const smoothScrollTo = useCallback((href) => {
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    setIsMobileMenuOpen(false);
+
+    // small delay so menu animation starts closing
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 40);
   }, []);
 
   return (
@@ -26,20 +55,22 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'glass-strong py-4' : 'py-6'
+          isScrolled ? "glass-strong py-4" : "py-6"
         }`}
       >
-        <div className="container mx-auto px-6 flex items-center justify-between">
-          <motion.a
-            href="#home"
+        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
+          <motion.button
+            type="button"
+            onClick={() => smoothScrollTo("#home")}
             className="font-display text-2xl font-bold text-gradient"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            aria-label="Go to Home"
           >
-            Portfolio
-          </motion.a>
+            Faiz Ahmad
+          </motion.button>
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex items-center gap-8">
@@ -50,36 +81,54 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <a
-                  href={item.href}
+                <button
+                  type="button"
+                  onClick={() => smoothScrollTo(item.href)}
                   className="relative font-medium text-muted-foreground hover:text-foreground transition-colors group"
                 >
                   {item.label}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                </a>
+                </button>
               </motion.li>
             ))}
+            <li>
+              <ThemeToggle />
+            </li>
           </ul>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden flex flex-col gap-1.5 p-2"
-          >
-            <motion.span
-              animate={isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="w-6 h-0.5 bg-foreground block"
-            />
-            <motion.span
-              animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="w-6 h-0.5 bg-foreground block"
-            />
-            <motion.span
-              animate={isMobileMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="w-6 h-0.5 bg-foreground block"
-            />
-          </motion.button>
+          {/* Mobile Actions */}
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
+
+            {/* Mobile Menu Button */}
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsMobileMenuOpen((v) => !v)}
+              className="flex flex-col gap-1.5 p-2"
+              aria-label="Toggle mobile menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <motion.span
+                animate={
+                  isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }
+                }
+                className="w-6 h-0.5 bg-foreground block"
+              />
+              <motion.span
+                animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                className="w-6 h-0.5 bg-foreground block"
+              />
+              <motion.span
+                animate={
+                  isMobileMenuOpen
+                    ? { rotate: -45, y: -6 }
+                    : { rotate: 0, y: 0 }
+                }
+                className="w-6 h-0.5 bg-foreground block"
+              />
+            </motion.button>
+          </div>
         </div>
       </motion.nav>
 
@@ -87,13 +136,27 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
+            initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
             className="fixed inset-0 z-40 glass-strong md:hidden pt-24"
+            role="dialog"
+            aria-modal="true"
           >
-            <ul className="flex flex-col items-center gap-8 py-12">
+            {/* Backdrop close */}
+            <button
+              type="button"
+              className="absolute inset-0"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close menu"
+            />
+
+            <ul className="relative flex flex-col items-center gap-8 py-12">
+              {/* <li>
+                <ThemeToggle />
+              </li> */}
+
               {navItems.map((item, index) => (
                 <motion.li
                   key={item.label}
@@ -101,13 +164,13 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <a
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                  <button
+                    type="button"
+                    onClick={() => smoothScrollTo(item.href)}
                     className="text-2xl font-display font-semibold text-foreground hover:text-primary transition-colors"
                   >
                     {item.label}
-                  </a>
+                  </button>
                 </motion.li>
               ))}
             </ul>
