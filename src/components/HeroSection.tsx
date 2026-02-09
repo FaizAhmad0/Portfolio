@@ -95,7 +95,7 @@ export default function HeroSection() {
                 <span
                   key={t}
                   className="rounded-full border border-border bg-background/25 backdrop-blur
-                               px-3 py-1 text-xs sm:text-sm text-foreground/80"
+                               px-3 py-1 text-xs sm:text-sm text-foreground/80 hover:glow-primary transition hover:cursor-default"
                 >
                   {t}
                 </span>

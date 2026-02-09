@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 
@@ -15,32 +15,74 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
+  // store latest intersectionRatio for each section
+  const ratiosRef = useRef({});
+  const activeRef = useRef("home");
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Active section tracking (IntersectionObserver)
+  // ✅ Active section tracking (robust)
   useEffect(() => {
     const ids = navItems.map((i) => i.href.replace("#", ""));
     const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
-
     if (!els.length) return;
+
+    // init ratios
+    ratiosRef.current = {};
+    ids.forEach((id) => (ratiosRef.current[id] = 0));
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // pick the most visible section
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        // update ratios for changed entries
+        entries.forEach((entry) => {
+          ratiosRef.current[entry.target.id] = entry.intersectionRatio;
+        });
 
-        if (visible?.target?.id) setActiveSection(visible.target.id);
+        // pick section with max ratio
+        let bestId = activeRef.current;
+        let bestRatio = 0;
+
+        for (const [id, ratio] of Object.entries(ratiosRef.current)) {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
+          }
+        }
+
+        // fallback: if none intersecting (fast scroll), use closest to top
+        if (bestRatio < 0.01) {
+          const y = window.scrollY + 120; // navbar offset
+          let closest = ids[0];
+          let minDiff = Infinity;
+
+          ids.forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const top = el.getBoundingClientRect().top + window.scrollY;
+            const diff = Math.abs(top - y);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closest = id;
+            }
+          });
+
+          bestId = closest;
+        }
+
+        if (bestId && bestId !== activeRef.current) {
+          activeRef.current = bestId;
+          setActiveSection(bestId);
+        }
       },
       {
         root: null,
-        threshold: [0.25, 0.35, 0.5, 0.65],
-        rootMargin: "-15% 0px -65% 0px", // feels right with fixed navbar
+        threshold: [0, 0.1, 0.25, 0.4, 0.6, 0.8, 1],
+        // top margin accounts for fixed navbar, bottom keeps detection stable
+        rootMargin: "-25% 0px -55% 0px",
       },
     );
 
@@ -71,11 +113,14 @@ export default function Navbar() {
     if (!el) return;
 
     setIsMobileMenuOpen(false);
-    setActiveSection(id); // ✅ instant active on click
+    activeRef.current = id;
+    setActiveSection(id);
 
-    setTimeout(() => {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 40);
+    // ✅ Offset scroll for fixed navbar
+    const yOffset = -90; // adjust if your navbar height differs
+    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
   }, []);
 
   return (
@@ -88,7 +133,8 @@ export default function Navbar() {
           isScrolled ? "glass-strong py-3" : "py-5"
         }`}
       >
-        <div className="container mx-auto sm:px-6 flex items-center justify-between">
+        {/* ✅ add px-4 for mobile padding */}
+        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
           <motion.button
             type="button"
             onClick={() => smoothScrollTo("#home")}
@@ -97,13 +143,11 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
             aria-label="Go to Home"
           >
-            {/* Light theme */}
             <img
               src="/logo.png"
               alt="Faiz Ahmad"
               className="h-12 w-15 block dark:hidden"
             />
-            {/* Dark theme */}
             <img
               src="/darklogo.png"
               alt="Faiz Ahmad"
@@ -134,8 +178,6 @@ export default function Navbar() {
                     }`}
                   >
                     {item.label}
-
-                    {/* underline */}
                     <span
                       className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
                         isActive ? "w-full" : "w-0 group-hover:w-full"
@@ -153,8 +195,6 @@ export default function Navbar() {
           {/* Mobile Actions */}
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
-
-            {/* Mobile Menu Button */}
             <motion.button
               type="button"
               whileTap={{ scale: 0.9 }}
@@ -198,7 +238,6 @@ export default function Navbar() {
             role="dialog"
             aria-modal="true"
           >
-            {/* Backdrop close */}
             <button
               type="button"
               className="absolute inset-0"
