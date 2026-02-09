@@ -13,11 +13,39 @@ const navItems = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // ✅ Active section tracking (IntersectionObserver)
+  useEffect(() => {
+    const ids = navItems.map((i) => i.href.replace("#", ""));
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
+
+    if (!els.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // pick the most visible section
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target?.id) setActiveSection(visible.target.id);
+      },
+      {
+        root: null,
+        threshold: [0.25, 0.35, 0.5, 0.65],
+        rootMargin: "-15% 0px -65% 0px", // feels right with fixed navbar
+      },
+    );
+
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   // lock background scroll when mobile menu open
@@ -43,8 +71,8 @@ export default function Navbar() {
     if (!el) return;
 
     setIsMobileMenuOpen(false);
+    setActiveSection(id); // ✅ instant active on click
 
-    // small delay so menu animation starts closing
     setTimeout(() => {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 40);
@@ -75,7 +103,6 @@ export default function Navbar() {
               alt="Faiz Ahmad"
               className="h-12 w-15 block dark:hidden"
             />
-
             {/* Dark theme */}
             <img
               src="/darklogo.png"
@@ -86,23 +113,38 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex items-center gap-8">
-            {navItems.map((item, index) => (
-              <motion.li
-                key={item.label}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <button
-                  type="button"
-                  onClick={() => smoothScrollTo(item.href)}
-                  className="relative font-medium text-muted-foreground hover:text-foreground transition-colors group"
+            {navItems.map((item, index) => {
+              const id = item.href.replace("#", "");
+              const isActive = activeSection === id;
+
+              return (
+                <motion.li
+                  key={item.label}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                </button>
-              </motion.li>
-            ))}
+                  <button
+                    type="button"
+                    onClick={() => smoothScrollTo(item.href)}
+                    className={`relative font-medium transition-colors group ${
+                      isActive
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+
+                    {/* underline */}
+                    <span
+                      className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                        isActive ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                    />
+                  </button>
+                </motion.li>
+              );
+            })}
             <li>
               <ThemeToggle />
             </li>
@@ -165,26 +207,31 @@ export default function Navbar() {
             />
 
             <ul className="relative flex flex-col items-center gap-8 py-12">
-              {/* <li>
-                <ThemeToggle />
-              </li> */}
+              {navItems.map((item, index) => {
+                const id = item.href.replace("#", "");
+                const isActive = activeSection === id;
 
-              {navItems.map((item, index) => (
-                <motion.li
-                  key={item.label}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => smoothScrollTo(item.href)}
-                    className="text-2xl font-display font-semibold text-foreground hover:text-primary transition-colors"
+                return (
+                  <motion.li
+                    key={item.label}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
                   >
-                    {item.label}
-                  </button>
-                </motion.li>
-              ))}
+                    <button
+                      type="button"
+                      onClick={() => smoothScrollTo(item.href)}
+                      className={`text-2xl font-display font-semibold transition-colors ${
+                        isActive
+                          ? "text-primary"
+                          : "text-foreground hover:text-primary"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  </motion.li>
+                );
+              })}
             </ul>
           </motion.div>
         )}
