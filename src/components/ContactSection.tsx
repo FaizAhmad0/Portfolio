@@ -29,7 +29,6 @@ export default function ContactSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✅ basic required guard (in case browser validation is bypassed)
     if (
       !formState.name.trim() ||
       !formState.email.trim() ||
@@ -50,13 +49,19 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="section-padding relative overflow-hidden">
+    <section
+      id="contact"
+      className="section-padding relative overflow-x-hidden"
+    >
       {/* Background decoration */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/30 to-accent/30 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto relative z-10 px-4 sm:px-6" ref={ref}>
+      <div
+        className="container mx-auto relative z-10 px-4 sm:px-6 w-full max-w-full overflow-x-hidden"
+        ref={ref}
+      >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -75,22 +80,21 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        {/* ✅ Center on mobile */}
-        <div className="grid lg:grid-cols-2 gap-16 max-w-5xl mx-auto justify-items-center">
+        {/* ✅ Center + prevent overflow */}
+        <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 max-w-5xl mx-auto w-full max-w-full justify-items-center min-w-0">
           {/* Contact form */}
           <motion.form
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             onSubmit={handleSubmit}
-            className="space-y-6 w-full max-w-[520px] mx-auto"
+            className="space-y-6 w-full max-w-[520px] mx-auto min-w-0"
           >
-            <div>
+            <div className="min-w-0">
               <label htmlFor="name" className="block text-sm font-medium mb-2">
                 Your Name
               </label>
-              <motion.input
-                whileFocus={{ scale: 1.01 }}
+              <input
                 type="text"
                 id="name"
                 required
@@ -98,17 +102,16 @@ export default function ContactSection() {
                 onChange={(e) =>
                   setFormState({ ...formState, name: e.target.value })
                 }
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                className="w-full max-w-full px-4 py-3 rounded-lg bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 placeholder="Your name"
               />
             </div>
 
-            <div>
+            <div className="min-w-0">
               <label htmlFor="email" className="block text-sm font-medium mb-2">
                 Email Address
               </label>
-              <motion.input
-                whileFocus={{ scale: 1.01 }}
+              <input
                 type="email"
                 id="email"
                 required
@@ -116,20 +119,19 @@ export default function ContactSection() {
                 onChange={(e) =>
                   setFormState({ ...formState, email: e.target.value })
                 }
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                className="w-full max-w-full px-4 py-3 rounded-lg bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 placeholder="your@email.com"
               />
             </div>
 
-            <div>
+            <div className="min-w-0">
               <label
                 htmlFor="message"
                 className="block text-sm font-medium mb-2"
               >
                 Your Message
               </label>
-              <motion.textarea
-                whileFocus={{ scale: 1.01 }}
+              <textarea
                 id="message"
                 rows={5}
                 required
@@ -137,7 +139,7 @@ export default function ContactSection() {
                 onChange={(e) =>
                   setFormState({ ...formState, message: e.target.value })
                 }
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+                className="w-full max-w-full px-4 py-3 rounded-lg bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
                 placeholder="Tell me about your project / requirement..."
               />
             </div>
@@ -158,37 +160,37 @@ export default function ContactSection() {
 
           {/* Contact info */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="space-y-8 w-full max-w-[520px] mx-auto"
+            className="space-y-8 w-full max-w-[520px] mx-auto min-w-0"
           >
-            <div className="glass rounded-2xl p-8">
+            <div className="glass rounded-2xl p-8 min-w-0">
               <h3 className="font-display text-xl font-semibold mb-4">
                 Contact Info
               </h3>
 
               <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 shrink-0 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
                     📧
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-sm text-muted-foreground">Email</div>
                     <a
                       href="mailto:mdfaizahmad1020@gmail.com"
-                      className="font-medium hover:text-primary transition-colors"
+                      className="font-medium hover:text-primary transition-colors break-words"
                     >
                       mdfaizahmad1020@gmail.com
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 shrink-0 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
                     📞
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-sm text-muted-foreground">Phone</div>
                     <a
                       href="tel:+918409669330"
@@ -199,11 +201,11 @@ export default function ContactSection() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 shrink-0 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
                     📍
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-sm text-muted-foreground">
                       Location
                     </div>
@@ -211,11 +213,11 @@ export default function ContactSection() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 shrink-0 rounded-lg bg-primary/20 flex items-center justify-center text-xl">
                     ⏰
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-sm text-muted-foreground">
                       Availability
                     </div>
@@ -225,12 +227,12 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="glass rounded-2xl p-8">
+            <div className="glass rounded-2xl p-8 min-w-0">
               <h3 className="font-display text-xl font-semibold mb-4">
                 Follow Me
               </h3>
 
-              <div className="flex gap-4 flex-wrap">
+              <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
                 {socialLinks.map((social, index) => {
                   const Icon = social.icon;
                   return (
@@ -243,8 +245,7 @@ export default function ContactSection() {
                       animate={isInView ? { opacity: 1, scale: 1 } : {}}
                       transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
                       whileHover={{ scale: 1.08, y: -5 }}
-                      className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center
-                                hover:bg-primary/15 border border-border/60 transition-colors"
+                      className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/15 border border-border/60 transition-colors"
                       title={social.name}
                       aria-label={social.name}
                     >
