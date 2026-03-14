@@ -80,6 +80,7 @@ const technologies = [
   "Git",
   "GitHub",
   "VS Code",
+  "Antigravity",
   "Postman",
   "GitHub Actions",
   "CI/CD Pipelines",
