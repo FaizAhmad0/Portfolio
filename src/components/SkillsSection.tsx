@@ -74,7 +74,6 @@ const technologies = [
   "AWS EC2",
   "NGINX",
   "PM2",
-  "Redis (Rate Limiting)",
 
   // Tools & CI/CD
   "Git",
@@ -90,6 +89,7 @@ const technologies = [
   // AI & Automation
   "Python",
   "FastAPI",
+  "Codex",
   "AI / LLM Integration",
   "OpenAI / ChatGPT API",
   "Prompt Engineering",
