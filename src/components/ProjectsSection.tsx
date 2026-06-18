@@ -3,6 +3,31 @@ import { useRef, useState } from "react";
 
 const projects = [
   {
+    id: 0,
+    title: "ClassSathi",
+    subtitle: "AI-Powered Coaching Management SaaS",
+    description:
+      "Modern coaching management platform with dedicated dashboards for students, teachers, parents, and admins. Features AI-powered doubt solving, attendance tracking, fee management, academic insights, and real-time communication tools.",
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Tailwind CSS",
+      "Ant Design",
+      "JWT",
+      "OpenAI",
+      "Redis",
+      "Nodemailer",
+      "NGINX",
+      "PM2",
+    ],
+    link: "https://faizlabs.in",
+    image:
+      "linear-gradient(135deg, rgba(59,130,246,0.16), rgba(139,92,246,0.14))",
+  },
+  {
     id: 1,
     title: "SaumicWallet",
     subtitle: "Order & Payment Platform",
@@ -85,27 +110,6 @@ const projects = [
     credentials: { user: "UID2223", pass: "UID2223@MD@30" },
     image:
       "linear-gradient(135deg, rgba(34,197,94,0.18), rgba(14,165,233,0.16))",
-  },
-  {
-    id: 6,
-    title: "E-Commerce App",
-    subtitle: "MERN Storefront",
-    description:
-      "E-commerce platform with product catalog, cart/checkout flow, admin inventory control, and scalable backend APIs.",
-    tags: [
-      "React",
-      "Node.js",
-      "MongoDB",
-      "Tailwind",
-      "Ant Design",
-      "REST APIs",
-      "Socket.io",
-      "Nodemailer",
-      "BullMQ",
-    ],
-    link: "#",
-    image:
-      "linear-gradient(135deg, rgba(245,158,11,0.16), rgba(99,102,241,0.14))",
   },
 ];
 

@@ -16,7 +16,7 @@ export default function HeroSection() {
     >
       {/* Background Dots */}
       <div className="absolute inset-0 z-0 flex items-center justify-center bg-[radial-gradient(hsl(var(--foreground)/0.15)_1px,transparent_0.9px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-{/* 
+      {/* 
       <div className="absolute inset-0 z-0">
         <Scene3D />
       </div> */}
@@ -27,7 +27,11 @@ export default function HeroSection() {
       <div className="container mx-auto sm:px-6 relative z-10">
         <div className="flex items-center justify-center py-20 sm:py-24">
           <div className="max-w-3xl mx-auto text-center">
-            <svg className="absolute -top-10 -left-10 w-full h-full text-blue-400 z-[-2] pointer-events-none opacity-50" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className="absolute -top-10 -left-10 w-full h-full text-blue-400 z-[-2] pointer-events-none opacity-50"
+              viewBox="0 0 400 400"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <defs>
                 <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur stdDeviation="8" result="blur" />
@@ -36,27 +40,33 @@ export default function HeroSection() {
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
-                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient
+                  id="lineGrad"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
                   <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
                   <stop offset="50%" stopColor="#6366f1" stopOpacity="1" />
                   <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              <path 
-                d="M 50,200 Q 150,50 250,250 T 450,150" 
-                fill="none" 
-                stroke="url(#lineGrad)" 
-                strokeWidth="3" 
+              <path
+                d="M 50,200 Q 150,50 250,250 T 450,150"
+                fill="none"
+                stroke="url(#lineGrad)"
+                strokeWidth="3"
                 filter="url(#glow)"
                 className="animate-[dash_6s_linear_infinite]"
                 strokeDasharray="400"
                 strokeDashoffset="400"
               />
-              <path 
-                d="M 20,150 Q 100,50 200,150 T 350,50" 
-                fill="none" 
-                stroke="url(#lineGrad)" 
-                strokeWidth="2" 
+              <path
+                d="M 20,150 Q 100,50 200,150 T 350,50"
+                fill="none"
+                stroke="url(#lineGrad)"
+                strokeWidth="2"
                 filter="url(#glow)"
                 className="animate-[dash_8s_linear_infinite_reverse]"
                 strokeDasharray="400"
@@ -133,6 +143,7 @@ export default function HeroSection() {
                 "React",
                 "Node",
                 "MongoDB",
+                "PostgreSQL",
                 "FastAPI",
                 "RAG",
                 "Docker",
