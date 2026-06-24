@@ -67,6 +67,7 @@ const technologies = [
   // Databases
   "MongoDB",
   "MySQL",
+  "PostgreSQL",
 
   // DevOps & Cloud
   "Docker",
