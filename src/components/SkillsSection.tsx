@@ -60,7 +60,7 @@ const technologies = [
   "REST APIs",
   "JWT Authentication",
   "RBAC",
-  "Redis (Caching)",
+  "Redis",
   "Node.js Cluster",
   "Third-party API Integration",
 
@@ -90,10 +90,14 @@ const technologies = [
   "Python",
   "FastAPI",
   "Codex",
+  "OpenCode",
+  "LangChain",
+  "AI Agent Development",
   "AI / LLM Integration",
   "OpenAI / ChatGPT API",
   "Prompt Engineering",
   "RAG Architecture",
+  "Hugging Face",
   "n8n Workflow Automation",
 
   // Core CS
