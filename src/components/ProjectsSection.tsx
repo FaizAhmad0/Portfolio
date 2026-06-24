@@ -5,9 +5,9 @@ const projects = [
   {
     id: 0,
     title: "ClassSathi",
-    subtitle: "AI-Powered Coaching Management SaaS",
+    subtitle: "Multi-Tenant AI-Powered Coaching Management SaaS",
     description:
-      "Modern coaching management platform with dedicated dashboards for students, teachers, parents, and admins. Features AI-powered doubt solving, attendance tracking, fee management, academic insights, and real-time communication tools.",
+      "Production-grade coaching management SaaS built for educational institutes with multi-tenant architecture and role-based dashboards for Admins, Teachers, Students, and Parents. Features assignment and study material management, attendance tracking, fee management, academic reporting, cloud file storage, email notifications, and an AI-powered Student Doubt Assistant that provides instant answers to academic queries. Designed with scalable backend architecture, secure authentication, and real-world institute workflows.",
     tags: [
       "Next.js",
       "TypeScript",
@@ -18,7 +18,9 @@ const projects = [
       "Ant Design",
       "JWT",
       "OpenAI",
+      "LangChain",
       "Redis",
+      "Cloudinary",
       "Nodemailer",
       "NGINX",
       "PM2",
